@@ -12,7 +12,7 @@ module escrow_contracts::escrow_factory_src {
         owner: address
     }
 
-    public fun new_des(ctx: &mut TxContext): EscrowFactory {
+    public fun new_src(ctx: &mut TxContext): EscrowFactory {
         EscrowFactory {
             id: new(ctx),
             owner: sender(ctx)
@@ -34,13 +34,17 @@ module escrow_contracts::escrow_factory_src {
     ) {
         assert!(sender(ctx) == factory.owner, 0);
 
-        let escrow = escrow_src::create<T>(
+        let order_data = escrow_contracts::order_types::new_order_creation_data(
             maker,
             resolver,
             amount,
-            hashlock,
             timelock,
-            finalitylock,
+            hashlock,
+            0 // creation_nonce set to 0 for now
+        );
+
+        let escrow = escrow_src::create<T>(
+            &order_data,
             token_coin,
             sui_coin,
             clock,

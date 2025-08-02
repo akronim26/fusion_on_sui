@@ -34,13 +34,17 @@ module escrow_contracts::escrow_factory_des {
     ) {
         assert!(sender(ctx) == factory.owner, 0);
 
-        let escrow = escrow_des::create<T>(
+        let order_data = escrow_contracts::order_types::new_order_creation_data(
             maker,
             resolver,
             amount,
-            hashlock,
             timelock,
-            finalitylock,
+            hashlock,
+            0 // creation_nonce set to 0 for now
+        );
+
+        let escrow = escrow_des::create<T>(
+            &order_data,
             token_coin,
             sui_coin,
             clock,
