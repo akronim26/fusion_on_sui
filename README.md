@@ -59,7 +59,7 @@ The contract system consists of several key modules:
 
 2. Install dependencies:
    ```bash
-   sui move compile
+   sui move build
    ```
 
 3. Run tests:
